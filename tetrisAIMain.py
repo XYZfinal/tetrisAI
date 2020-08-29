@@ -1,5 +1,6 @@
 import pyautogui
 import time
+import GameState as gs
 
 ## Each square in the game has dimensions of 24*24 pixels. The are a total of 10*20 square in the game
 LEFT = 0
@@ -14,8 +15,11 @@ def calibrate():
 	leftUpCorner = pyautogui.locateOnScreen('leftUpCorner.JPG', confidence = 0.95)
 	LEFT = leftUpCorner[0] + 1
 	TOP = leftUpCorner[1] + 1
-	## capture command
-	#pyautogui.screenshot('test.png', region=(LEFT, TOP, WIDTH, HEIGHT))
+
+## Capture a screenshot of exactly the game board
+def capture_game():
+	image = pyautogui.screenshot('test.png', region=(LEFT, TOP, WIDTH, HEIGHT))
+	return image
 
 ## Start new game by click new game button on jstris window and pressing f4
 def initiate_game():
@@ -37,21 +41,25 @@ def initiate():
 	calibrate()
 	initiate_game()
 
-	pyautogui.screenshot('test.png', region=(LEFT, TOP, WIDTH, HEIGHT))
-
+def do_moves(moves):
+	pyautogui.press(moves)
 	### dummy ai to test usability of pyautogui (TO REMOVE)
-	for i in range(10):
+	for i in range(5):
 		pyautogui.press('left', presses=5)
 		pyautogui.press('space')
 
-	for i in range(10):
+	for i in range(5):
 		pyautogui.press('right', presses=5)
 		pyautogui.press('space')
 
-	for i in range(10):
+	for i in range(3):
 		pyautogui.press('space')
 
 if __name__ == "__main__":
 	## Make sure to initiate with the jstris game windown in the primary screen
 	## the game board, new game button, and the upcoming pieces must be full-sized (don't actually think that it resizes) and fully visible
 	initiate()
+	do_moves([])
+	gameImg = capture_game()
+	gameState = gs.GameState(gameImg)
+	print(gameState.matrix)
