@@ -20,4 +20,6 @@ pip install opencv-python
 
 2020-08-27： Implemented jstris interactions (screenshotting the game board, starting the game, and implemented a dummy AI to test all functionalities)
 
-2020-089-28 : Discovered through testing the pixel RGB data for empty cells, block cells, and block shadow cells. Implemented an image processing construction of a matrix model of the game
+2020-08-28 : Discovered through testing the pixel RGB data for empty cells, block cells, and block shadow cells. Implemented an image processing construction of a matrix model of the game
+
+2020-09-05 : Added hold and forsight blocks recognition 

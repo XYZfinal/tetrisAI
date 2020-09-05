@@ -18,8 +18,25 @@ def calibrate():
 
 ## Capture a screenshot of exactly the game board
 def capture_game():
-	image = pyautogui.screenshot('test.png', region=(LEFT, TOP, WIDTH, HEIGHT))
+	image = pyautogui.screenshot('game.png', region=(LEFT, TOP, WIDTH, HEIGHT))
 	return image
+
+### Capture a screenshot of exactly the next blocks
+def capture_forsight():
+	image = pyautogui.screenshot('forsight.png', region=(LEFT+WIDTH+30, TOP+24, 24*4, 24*14))
+	return image
+
+### Capture holded block
+def capture_hold():
+	image = pyautogui.screenshot('hold.png', region=(LEFT-105, TOP+24, 24*4, 24*2))
+	return image
+
+### Capture all game info
+def capture_inputs():
+	gameImg = capture_game()
+	forsightImg = capture_forsight()
+	holdImg = capture_hold()
+	return gameImg, forsightImg, holdImg
 
 ## Start new game by click new game button on jstris window and pressing f4
 def initiate_game():
@@ -44,6 +61,7 @@ def initiate():
 def do_moves(moves):
 	pyautogui.press(moves)
 	### dummy ai to test usability of pyautogui (TO REMOVE)
+	pyautogui.press('shift')
 	for i in range(5):
 		pyautogui.press('left', presses=5)
 		pyautogui.press('space')
@@ -56,10 +74,11 @@ def do_moves(moves):
 		pyautogui.press('space')
 
 if __name__ == "__main__":
-	## Make sure to initiate with the jstris game windown in the primary screen
+	## Make sure to initiate with the jstris game windown in the primary screen with 100% zoom in
 	## the game board, new game button, and the upcoming pieces must be full-sized (don't actually think that it resizes) and fully visible
 	initiate()
 	do_moves([])
-	gameImg = capture_game()
-	gameState = gs.GameState(gameImg)
-	print(gameState.matrix)
+	gameImg, forsightImg, holdImg = capture_inputs()
+	gameState = gs.GameState(gameImg, forsightImg, holdImg)
+	gameState.debug_pretty_print()
+	pyautogui.press('space', presses=10)
