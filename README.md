@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Minimax Algorithm implementation on tetris (with jstris as the simulator)
+Tetris Algorithm implementation(with jstris as the simulator)
 
 python version used: 3.8.3
 
