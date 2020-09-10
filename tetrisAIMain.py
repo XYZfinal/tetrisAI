@@ -1,6 +1,7 @@
 import pyautogui
 import time
 import GameState as gs
+import evaluate as  ev
 
 ## Each square in the game has dimensions of 24*24 pixels. The are a total of 10*20 square in the game
 LEFT = 0
@@ -17,8 +18,8 @@ def calibrate():
 	TOP = leftUpCorner[1] + 1
 
 ## Capture a screenshot of exactly the game board
-def capture_game():
-	image = pyautogui.screenshot('game.png', region=(LEFT, TOP, WIDTH, HEIGHT))
+def capture_game(name):
+	image = pyautogui.screenshot(name, region=(LEFT, TOP, WIDTH, HEIGHT))
 	return image
 
 ### Capture a screenshot of exactly the next blocks
@@ -33,7 +34,7 @@ def capture_hold():
 
 ### Capture all game info
 def capture_inputs():
-	gameImg = capture_game()
+	gameImg = capture_game('game.png')
 	forsightImg = capture_forsight()
 	holdImg = capture_hold()
 	return gameImg, forsightImg, holdImg
@@ -81,4 +82,6 @@ if __name__ == "__main__":
 	gameImg, forsightImg, holdImg = capture_inputs()
 	gameState = gs.GameState(gameImg, forsightImg, holdImg)
 	gameState.debug_pretty_print()
+	print(ev.evaluate(gameState.matrix))
+	capture_game('after.png')
 	pyautogui.press('space', presses=10)
