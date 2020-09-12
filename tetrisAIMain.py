@@ -1,7 +1,9 @@
 import pyautogui
 import time
 import GameState as gs
-import evaluate as  ev
+import evaluate as ev
+import maximax as algo
+import debug
 
 ## Each square in the game has dimensions of 24*24 pixels. The are a total of 10*20 square in the game
 LEFT = 0
@@ -85,3 +87,8 @@ if __name__ == "__main__":
 	print(ev.evaluate(gameState.matrix))
 	capture_game('after.png')
 	pyautogui.press('space', presses=10)
+	potential_moves = algo.potential_moves(gameState.next, gameState.matrix)
+	print('\n Potential future moves from previous position: \n ')
+	for matrix in potential_moves:
+		debug.print_matrix(matrix)
+		print('\n')

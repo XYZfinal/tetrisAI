@@ -9,14 +9,14 @@ def potential_moves(block, gameboard):
 	ans = []
 	temp = gameboard
 	for row in range(20):
-	for column in range(10):
-		if top[column] == -1 and gameboard[row][column] != 'E':
-		top[column] = row
-		count = count + 1
-	    if count == 10:
-		break
-	if count == 10:
-		break
+		for column in range(10):
+			if top[column] == -1 and gameboard[row][column] != 'E':
+				top[column] = row
+				count = count + 1
+			if count == 10:
+				break
+		if count == 10:
+			break
 
 	for column in range(10):
 		row = top[column]
