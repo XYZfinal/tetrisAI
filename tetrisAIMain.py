@@ -88,7 +88,6 @@ if __name__ == "__main__":
 	capture_game('after.png')
 	pyautogui.press('space', presses=10)
 	potential_moves = algo.potential_moves(gameState.next, gameState.matrix)
-	print('\n Potential future moves from previous position: \n ')
-	for matrix in potential_moves:
-		debug.print_matrix(matrix)
-		print('\n')
+	print('\nPotential future moves from previous position: \n ')
+	for coords in potential_moves:
+		debug.print_coords(coords, gameState.matrix)
