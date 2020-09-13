@@ -35,3 +35,5 @@ pip install opencv-python
 
 
 2020-09-10: Wrote game state evaluator in evaluate.py
+
+2020-09-13: Wrote potential placement of next block in maximax.py
