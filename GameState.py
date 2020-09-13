@@ -1,5 +1,6 @@
 import pyautogui
 import blockColors as bc
+import debug
 
 ## TODO: Implementation of Game state construction
 ###  Analysis of screenshot into game state object for minimax algorithm
@@ -95,10 +96,6 @@ class GameState:
 		print('Block to place: ' + self.next + '\n')
 
 		## Print current game board
-		for row in self.matrix:
-			toPrint = ''
-			for cell in row:
-				toPrint += cell
-			print(toPrint)
+		debug.print_matrix(self.matrix)
 
 
