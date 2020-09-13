@@ -5,6 +5,9 @@ import evaluate as ev
 import maximax as algo
 import debug
 
+## DEBUG?
+DEBUG = True
+
 ## Each square in the game has dimensions of 24*24 pixels. The are a total of 10*20 square in the game
 LEFT = 0
 TOP = 0
@@ -83,11 +86,16 @@ if __name__ == "__main__":
 	do_moves([])
 	gameImg, forsightImg, holdImg = capture_inputs()
 	gameState = gs.GameState(gameImg, forsightImg, holdImg)
-	gameState.debug_pretty_print()
-	print(ev.evaluate(gameState.matrix))
+
+	if DEBUG:
+		gameState.debug_pretty_print()
+		print(ev.evaluate(gameState.matrix))
+
 	capture_game('after.png')
 	pyautogui.press('space', presses=10)
 	potential_moves = algo.potential_moves(gameState.next, gameState.matrix)
-	print('\nPotential future moves from previous position: \n ')
-	for coords in potential_moves:
-		debug.print_coords(coords, gameState.matrix)
+
+	if DEBUG:
+		print('\nPotential future moves from previous position: \n ')
+		for coords in potential_moves:
+			debug.print_coords(coords, gameState.matrix)
