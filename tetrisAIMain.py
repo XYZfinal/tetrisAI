@@ -141,10 +141,6 @@ if __name__ == "__main__":
 		print('\n')
 
 	coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
-	print('================================')
-	print(coords)
-	print(maxScore)
-	print(changed)
-
+	
 	capture_game('after.png')
 	pyautogui.press('space', presses=10)
