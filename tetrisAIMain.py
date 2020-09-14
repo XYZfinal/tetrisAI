@@ -140,27 +140,6 @@ if __name__ == "__main__":
 		print(ev.evaluate(gameState.matrix))
 		print('\n')
 
-	#potential_moves = algo.potential_moves(gameState.next, gameState.matrix)
-	#
-	#bestPotential = 0
-	#maxScore = -9999999
-	#for i in range(len(potential_moves)):
-	#	tempMatrix = copy.deepcopy(gameState.matrix)
-	#	for xy in potential_moves[i]:
-	#		tempMatrix[xy[0]][xy[1]] = 'N'
-	#	score = ev.evaluate(tempMatrix)
-	#	debug.print_matrix(tempMatrix)
-	#	print(str(score))
-	#	if score > maxScore:
-	#		maxScore = score
-	#		bestPotential = i
-	#
-	#if DEBUG:
-	#	print('\nPotential future moves from previous position: \n ')
-	#	for coords in potential_moves:
-	#		debug.print_coords(coords, gameState.matrix)
-	#	print('Best score coords: With score of' + str(maxScore) + '\n')
-	#	debug.print_coords(potential_moves[bestPotential], gameState.matrix)
 	coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
 	print('================================')
 	print(coords)
