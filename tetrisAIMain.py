@@ -6,7 +6,7 @@ import evaluate as ev
 import maximax as algo
 import debug
 
-## DEBUG?
+## print debug output?
 DEBUG = True
 
 ## Each square in the game has dimensions of 24*24 pixels. The are a total of 10*20 square in the game
