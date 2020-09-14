@@ -80,6 +80,53 @@ def do_moves(moves):
 	for i in range(3):
 		pyautogui.press('space')
 
+def check_moves(bestPotential, maxScore, potential_moves, board):
+	bestPotential = bestPotential
+	maxScore = maxScore
+	changed = False
+	for i in range(len(potential_moves)):
+		tempMatrix = copy.deepcopy(board)
+		for xy in potential_moves[i]:
+			tempMatrix[xy[0]][xy[1]] = 'N'
+		score = ev.evaluate(tempMatrix)
+
+		if DEBUG:
+			debug.print_matrix(tempMatrix)
+			print(str(score))
+
+		if score > maxScore:
+			maxScore = score
+			bestPotential = i
+			changed = True
+
+	return bestPotential, maxScore, changed
+
+def find_best_move(holdPiece, nextPiece, board):
+	potential_moves_next = algo.potential_moves(nextPiece, board)
+
+	if holdPiece:
+		potential_moves_hold = algo.potential_moves(holdPiece, board)
+
+	bestPotential, maxScore, changed = check_moves(0, -9999999, potential_moves_next, board)
+	bestPotential, maxScore, changed = check_moves(bestPotential, maxScore, potential_moves_hold, board)
+
+	if DEBUG:
+		print('\nPotential future moves from previous position: \n ')
+		for coords in potential_moves_next:
+			debug.print_coords(coords, board)
+		for coords in potential_moves_hold:
+			debug.print_coords(coords, board)
+		print('Best score coords: With score of' + str(maxScore) + '\n')
+		if changed:
+			debug.print_coords(potential_moves_hold[bestPotential], board)
+		else:
+			debug.print_coords(potential_moves_next[bestPotential], board)
+
+	if changed:
+		return potential_moves_hold[bestPotential], maxScore, changed
+	else:
+		return potential_moves_next[bestPotential], maxScore, changed
+
 if __name__ == "__main__":
 	## Make sure to initiate with the jstris game windown in the primary screen with 100% zoom in
 	## the game board, new game button, and the upcoming pieces must be full-sized (don't actually think that it resizes) and fully visible
@@ -93,26 +140,32 @@ if __name__ == "__main__":
 		print(ev.evaluate(gameState.matrix))
 		print('\n')
 
+	#potential_moves = algo.potential_moves(gameState.next, gameState.matrix)
+	#
+	#bestPotential = 0
+	#maxScore = -9999999
+	#for i in range(len(potential_moves)):
+	#	tempMatrix = copy.deepcopy(gameState.matrix)
+	#	for xy in potential_moves[i]:
+	#		tempMatrix[xy[0]][xy[1]] = 'N'
+	#	score = ev.evaluate(tempMatrix)
+	#	debug.print_matrix(tempMatrix)
+	#	print(str(score))
+	#	if score > maxScore:
+	#		maxScore = score
+	#		bestPotential = i
+	#
+	#if DEBUG:
+	#	print('\nPotential future moves from previous position: \n ')
+	#	for coords in potential_moves:
+	#		debug.print_coords(coords, gameState.matrix)
+	#	print('Best score coords: With score of' + str(maxScore) + '\n')
+	#	debug.print_coords(potential_moves[bestPotential], gameState.matrix)
+	coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
+	print('================================')
+	print(coords)
+	print(maxScore)
+	print(changed)
+
 	capture_game('after.png')
 	pyautogui.press('space', presses=10)
-	potential_moves = algo.potential_moves(gameState.next, gameState.matrix)
-
-	bestPotential = 0
-	maxScore = -9999999
-	for i in range(len(potential_moves)):
-		tempMatrix = copy.deepcopy(gameState.matrix)
-		for xy in potential_moves[i]:
-			tempMatrix[xy[0]][xy[1]] = 'N'
-		score = ev.evaluate(tempMatrix)
-		debug.print_matrix(tempMatrix)
-		print(str(score))
-		if score > maxScore:
-			maxScore = score
-			bestPotential = i
-
-	if DEBUG:
-		print('\nPotential future moves from previous position: \n ')
-		for coords in potential_moves:
-			debug.print_coords(coords, gameState.matrix)
-		print('Best score coords: With score of' + str(maxScore) + '\n')
-		debug.print_coords(potential_moves[bestPotential], gameState.matrix)
