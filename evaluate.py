@@ -17,8 +17,8 @@ def evaluate(matrix):
 		completed = True
 		for column in range(10):
 			if matrix[row][column] != 'E':
-				if row > columnHeight[column]:
-					columnHeight[column] = row
+				if 20 - row > columnHeight[column]:
+					columnHeight[column] = 20 - row
 			else:
 				completed = False
 				if columnHeight[column] > row:
@@ -30,6 +30,8 @@ def evaluate(matrix):
 		aggregateHeight += columnHeight[i]
 		if i > 0:
 			bumpiness += abs(columnHeight[i-1] - columnHeight[i])
+		else:
+			bumpiness += abs(columnHeight[0] - columnHeight[9])
 
 	resultScore = AGGREGATE_HEIGHT_PARAMETER * aggregateHeight
 	resultScore += COMPLETED_LINES_PARAMETER * completedLines
