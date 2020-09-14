@@ -58,6 +58,8 @@ def initiate_game():
 	## Wait 1.75 second for the game to start
 	time.sleep(1.75)
 
+## initiate the AI by sacking 1 game to calibrate the game (mainly just making sure the top left square is empty for screen print calibration)
+## and initiate a second game for the ai to beat
 def initiate():
 	## Suicide 1 game, making sure the left top corner is untouched for screenprint calibration
 	initiate_game()
@@ -65,6 +67,8 @@ def initiate():
 	calibrate()
 	initiate_game()
 
+## input a sequence of moves for the ai to accomplish, the goal is to place exactly one block by the end of the sequence 
+## also screenprint for debugging
 def do_moves(moves):
 	pyautogui.press(moves)
 	### dummy ai to test usability of pyautogui (TO REMOVE)
@@ -80,6 +84,8 @@ def do_moves(moves):
 	for i in range(3):
 		pyautogui.press('space')
 
+## check all potential moves and find the best move that beats the given maxscore
+## return the same bestPotential and maxscore if nothing is better
 def check_moves(bestPotential, maxScore, potential_moves, board):
 	bestPotential = bestPotential
 	maxScore = maxScore
@@ -101,6 +107,7 @@ def check_moves(bestPotential, maxScore, potential_moves, board):
 
 	return bestPotential, maxScore, changed
 
+## find best moves available for the AI at this point, factoring both the current block to place and the held piece
 def find_best_move(holdPiece, nextPiece, board):
 	potential_moves_next = algo.potential_moves(nextPiece, board)
 
@@ -141,6 +148,6 @@ if __name__ == "__main__":
 		print('\n')
 
 	coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
-	
+
 	capture_game('after.png')
 	pyautogui.press('space', presses=10)
