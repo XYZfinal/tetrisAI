@@ -18,7 +18,7 @@ def potential_moves(block, gameboard):
 			break
 	for column in range(10):
 		row = top[column]
-		if block == 'I':
+		if block == 'I': #left -> right OR bottom -> top
 			if column < 7:
 				highest = min(top[column], top[column+1], top[column+2], top[column+3])
 				if highest > 0:
@@ -36,8 +36,8 @@ def potential_moves(block, gameboard):
 				temp.append((row-4, column))
 				ans.append(temp)
 
-		elif block == "J":
-			if column < 8: 
+		elif block == 'J': # left-top -> right OR bottom -> top-right OR
+			if column < 8: # left -> right-bottom OR bottom-left -> top
 				highest = min(top[column], top[column+1], top[column+2])
 				if highest > 1: # case 1
 					temp = []
@@ -72,8 +72,8 @@ def potential_moves(block, gameboard):
 					temp.append((highest-3, column+1))
 					ans.append(temp)
 
-		elif block == "L":
-			if column < 8: 
+		elif block == 'L': # left -> right-top OR top -> bottom-right OR
+			if column < 8: # left-bottom -> right OR top-left -> bottom
 				highest = min(top[column], top[column+1], top[column+2])
 				if highest > 1: # case 1
 					temp = []
@@ -108,7 +108,7 @@ def potential_moves(block, gameboard):
 					temp.append((highest-1, column+1))
 					ans.append(temp)
 
-		elif block == "O":
+		elif block == 'O': # left-top -> right-top -> left-bottom -> right-bottom
 			if column < 9:
 				highest = min(top[column], top[column+1])
 				if highest > 1:
@@ -119,7 +119,7 @@ def potential_moves(block, gameboard):
 					temp.append((highest-1, column+1))
 					ans.append(temp)
 
-		elif block == "S":
+		elif block == 'S': # left -> right OR top -> bottom
 			if column < 8: 
 				highest = min(top[column], top[column+1], top[column+2]+1)
 				if highest > 1: # case 1
@@ -139,8 +139,8 @@ def potential_moves(block, gameboard):
 					temp.append((highest-1, column+1))
 					ans.append(temp)
 
-		elif block == "T":
-			if column < 8: 
+		elif block == 'T': # left -> right -> top OR top -> bottom -> right OR
+			if column < 8: # left -> right -> bottom OR -> left -> top -> bottom
 				highest = min(top[column], top[column+1], top[column+2])
 				if highest > 1: # case 1
 					temp = []
@@ -175,7 +175,7 @@ def potential_moves(block, gameboard):
 					temp.append((highest-1, column+1))
 					ans.append(temp)
 
-		elif block == "Z":
+		elif block == 'Z': # left -> right OR bottom -> top
 			if column < 8: 
 				highest = min(top[column]+1, top[column+1], top[column+2])
 				if highest > 1: # case 1
@@ -187,11 +187,68 @@ def potential_moves(block, gameboard):
 					ans.append(temp)
 			if column < 9: 
 				highest = min(top[column], top[column+1]+1)
-				if highest > 2: # case 3
+				if highest > 2: # case 2
 					temp = []
-					temp.append((highest-3, column))
+					temp.append((highest-1, column))
 					temp.append((highest-2, column))
 					temp.append((highest-2, column+1))
-					temp.append((highest-1, column+1))
+					temp.append((highest-3, column+1))
 					ans.append(temp)
 	return ans
+
+
+def get_moves(coord, gameboard, block):
+	ans = []
+	x = 4
+	if block == 'I': 
+		if (coord[0][0] == coord[1][0]):
+			ans.append('up')
+			x = 6
+		
+	elif block == 'J': 
+		if (coord[0][1] - 1 == coord[1][1]):
+			ans.append('up')
+			x = 5
+		elif (coord[2][1] + 1 == coord[3][1]):
+			ans.extend(['up', 'up'])
+		elif (coord[2][1] - 1 == coord[3][1]):
+			ans.extend(['up', 'up', 'up'])
+
+	elif block == 'L': 
+		if (coord[0][1] + 1 == coord[1][1]):
+			ans.append('up')
+			x = 5
+		elif (coord[0][1] - 1 == coord[1][1]):
+			ans.append(['up', 'up'])
+		elif (coord[2][1] + 1 == coord[3][1]):
+			ans.extend(['up', 'up', 'up'])
+
+	elif block == 'S': 
+		if (coord[0][0] == coord[1][0]):
+			ans.append('up')
+			x = 5
+
+	elif block == 'T': 
+		if (coord[1][0] + 1 == coord[3][0]):
+			ans.append('up')
+			x = 5
+		elif (coord[1][1] + 1 == coord[3][1]):
+			ans.extend(['up', 'up'])
+		elif (coord[1][1] + 2 == coord[3][1]):
+			ans.extend(['up', 'up', 'up'])
+		
+	elif block == 'Z': 
+		if (coord[0][0] == coord[1][0]):
+			ans.append('up')
+			x = 5
+
+	for i in range(x, coord[0][0]):
+		ans.append('right')
+	for i in range(coord[0][0], x):
+		ans.append('left')
+	ans.append('down')
+	return ans
+		
+
+
+
