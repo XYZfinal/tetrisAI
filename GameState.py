@@ -45,30 +45,30 @@ def checkBlock(rgb):
 		#return 'T_SHADOW'
 	else:
 		#Should never happen
-		return str(rgb)
+		return 'E'
 	
 
 class GameState:
-	def __init__(self, gameImg, forsightImg, holdImg):
+	def __init__(self, gameImg, forsightImg, holdImg, square):
 		# Processes the screenshot image of the current game state and transforms it into all necessary information for the AI
 		## Create matrix of current game board
 		self.matrix = [['E','E','E','E','E','E','E','E','E','E']]
 		for i in range(1, 20):
-			y = i * 24 + 12
+			y = i * square + square*0.5
 			row = []
 			for j in range(10):
-				x = j * 24 + 12
+				x = j * square + square*0.5
 				pix = gameImg.getpixel((x, y))
 				blockContent = checkBlock(pix)
 				row.append(blockContent)
 			self.matrix.append(row)
 
 		## Determine the next block to place
-		self.next = checkBlock(gameImg.getpixel((108, 12)))
+		self.next = checkBlock(gameImg.getpixel((square*4.5, square*0.5)))
 
 		## Determine the holded block
-		hold1 = checkBlock(holdImg.getpixel((36, 12)))
-		hold2 = checkBlock(holdImg.getpixel((36, 36)))
+		hold1 = checkBlock(holdImg.getpixel((square*1.5, square*0.5)))
+		hold2 = checkBlock(holdImg.getpixel((square*1.5, square*1.5)))
 		if hold1 != 'E':
 			self.hold = hold1
 		else:
@@ -77,8 +77,8 @@ class GameState:
 		## Determine the next blocks in the future
 		self.future = []
 		for i in range(5):
-			block1 = checkBlock(forsightImg.getpixel((36 , i*3*24 + 12)))
-			block2 = checkBlock(forsightImg.getpixel((36 , i*3*24 + 36)))
+			block1 = checkBlock(forsightImg.getpixel((square*1.5 , i*3*square + square*0.5)))
+			block2 = checkBlock(forsightImg.getpixel((square*1.5 , i*3*square + square*1.5)))
 			if block1 != 'E':
 				self.future.append(block1)
 			else:

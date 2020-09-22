@@ -5,6 +5,7 @@ import GameState as gs
 import evaluate as ev
 import maximax as algo
 import debug
+import blockColors as color
 
 ## print debug output?
 DEBUG = True
@@ -22,17 +23,19 @@ def check_screen():
 	global LEFT_UP
 	global NEW_GAME
 	screen = pyautogui.size()
-	#if screen == (1920, 1080):
-	if screen != (1920, 1080):
+	if screen == (1920, 1080):
+	#if screen != (1920, 1080):
 		LEFT_UP = 'leftUpCorner.JPG'
 		NEW_GAME = 'newgamebutton.JPG'
-	#elif screen == (1280, 800):
-	elif screen == (1920, 1080):
+	elif screen == (1280, 800):
+	#elif screen == (1920, 1080):
 		LEFT_UP = 'MACleftUpCorner.JPG'
 		NEW_GAME = 'MACnewgamebutton.JPG'
 	else:
 		LEFT_UP = 'leftUpCorner.JPG'
 		NEW_GAME = 'newgamebutton.JPG'
+
+	color.initiate_colors(LEFT_UP)
 
 ## Calibrate top left corner for screenshots as well as the size of the game
 def calibrate():
@@ -47,7 +50,7 @@ def calibrate():
 	if LEFT_UP == 'leftUpCorner.JPG':
 		SQUARE = 24
 	elif LEFT_UP == 'MACleftUpCorner.JPG':
-		SQUARE = leftUpCorner[3] - 4
+		SQUARE = leftUpCorner[3] - 5
 	else:
 		SQUARE = 24
 	WIDTH = SQUARE * 10
@@ -90,8 +93,7 @@ def capture_inputs():
 ## Start new game by click new game button on jstris window and pressing f4
 def initiate_game():
 	# Finding new game button location
-	newGameButtonLocation = pyautogui.locateOnScreen(NEW_GAME, confidence = 0.9)
-	print(NEW_GAME)
+	newGameButtonLocation = pyautogui.locateOnScreen(NEW_GAME, confidence = 0.8)
 	newGameButtonCenterPoint = pyautogui.center(newGameButtonLocation)
 
 	# Start game
@@ -185,7 +187,7 @@ if __name__ == "__main__":
 	initiate()
 	#do_moves([])
 	gameImg, forsightImg, holdImg = capture_inputs()
-	gameState = gs.GameState(gameImg, forsightImg, holdImg)
+	gameState = gs.GameState(gameImg, forsightImg, holdImg, SQUARE)
 
 	if DEBUG:
 		gameState.debug_pretty_print()
