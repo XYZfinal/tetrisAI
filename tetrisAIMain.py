@@ -9,19 +9,49 @@ import debug
 ## print debug output?
 DEBUG = True
 
-## Each square in the game has dimensions of 24*24 pixels. The are a total of 10*20 square in the game
+## Parameters for the size and location of the game
+LEFT_UP = ''
+NEW_GAME = ''
+SQUARE = 0
 LEFT = 0
 TOP = 0
-WIDTH = 240
-HEIGHT = 480
+WIDTH = 0
+HEIGHT = 0
 
-## Calibrate top left corner for screenshots 
+def check_screen():
+	global LEFT_UP
+	global NEW_GAME
+	screen = pyautogui.size()
+	#if screen == (1920, 1080):
+	if screen != (1920, 1080):
+		LEFT_UP = 'leftUpCorner.JPG'
+		NEW_GAME = 'newgamebutton.JPG'
+	#elif screen == (1280, 800):
+	elif screen == (1920, 1080):
+		LEFT_UP = 'MACleftUpCorner.JPG'
+		NEW_GAME = 'MACnewgamebutton.JPG'
+	else:
+		LEFT_UP = 'leftUpCorner.JPG'
+		NEW_GAME = 'newgamebutton.JPG'
+
+## Calibrate top left corner for screenshots as well as the size of the game
 def calibrate():
 	global LEFT
 	global TOP
-	leftUpCorner = pyautogui.locateOnScreen('leftUpCorner.JPG', confidence = 0.95)
+	global SQUARE
+	global WIDTH
+	global HEIGHT
+	leftUpCorner = pyautogui.locateOnScreen(LEFT_UP, confidence = 0.9)
 	LEFT = leftUpCorner[0] + 1
 	TOP = leftUpCorner[1] + 1
+	if LEFT_UP == 'leftUpCorner.JPG':
+		SQUARE = 24
+	elif LEFT_UP == 'MACleftUpCorner.JPG':
+		SQUARE = leftUpCorner[3] - 4
+	else:
+		SQUARE = 24
+	WIDTH = SQUARE * 10
+	HEIGHT = SQUARE * 20
 
 ## Capture a screenshot of exactly the game board
 def capture_game(name):
@@ -30,12 +60,24 @@ def capture_game(name):
 
 ### Capture a screenshot of exactly the next blocks
 def capture_forsight():
-	image = pyautogui.screenshot('forsight.png', region=(LEFT+WIDTH+30, TOP+24, 24*4, 24*14))
+	if LEFT_UP == 'leftUpCorner.JPG':
+		forsightRegion = (LEFT+WIDTH+SQUARE+6, TOP+SQUARE, SQUARE*4, SQUARE*14)
+	elif LEFT_UP == 'MACleftUpCorner.JPG':
+		forsightRegion = (LEFT+WIDTH+SQUARE+6, TOP+SQUARE, SQUARE*4, SQUARE*14)
+	else:
+		forsightRegion = (LEFT+WIDTH+SQUARE+6, TOP+SQUARE, SQUARE*4, SQUARE*14)
+	image = pyautogui.screenshot('forsight.png', region=forsightRegion)
 	return image
 
 ### Capture holded block
 def capture_hold():
-	image = pyautogui.screenshot('hold.png', region=(LEFT-105, TOP+24, 24*4, 24*2))
+	if LEFT_UP == 'leftUpCorner.JPG':
+		holdRegion = (LEFT-SQUARE*4-9, TOP+SQUARE, SQUARE*4, SQUARE*2)
+	elif LEFT_UP == 'MACleftUpCorner.JPG':
+		holdRegion = (LEFT-SQUARE*4-9, TOP+SQUARE, SQUARE*4, SQUARE*2)
+	else:
+		holdRegion = (LEFT-SQUARE*4-9, TOP+SQUARE, SQUARE*4, SQUARE*2)
+	image = pyautogui.screenshot('hold.png', region=holdRegion)
 	return image
 
 ### Capture all game info
@@ -48,7 +90,8 @@ def capture_inputs():
 ## Start new game by click new game button on jstris window and pressing f4
 def initiate_game():
 	# Finding new game button location
-	newGameButtonLocation = pyautogui.locateOnScreen('newgamebutton.JPG', confidence = 0.9)
+	newGameButtonLocation = pyautogui.locateOnScreen(NEW_GAME, confidence = 0.9)
+	print(NEW_GAME)
 	newGameButtonCenterPoint = pyautogui.center(newGameButtonLocation)
 
 	# Start game
@@ -104,15 +147,16 @@ def check_moves(bestPotential, maxScore, potential_moves, board):
 			maxScore = score
 			bestPotential = i
 			changed = True
-
 	return bestPotential, maxScore, changed
 
 ## find best moves available for the AI at this point, factoring both the current block to place and the held piece
 def find_best_move(holdPiece, nextPiece, board):
 	potential_moves_next = algo.potential_moves(nextPiece, board)
 
-	if holdPiece:
+	if holdPiece != 'E':
 		potential_moves_hold = algo.potential_moves(holdPiece, board)
+	else:
+		potential_moves_hold = []
 
 	bestPotential, maxScore, changed = check_moves(0, -9999999, potential_moves_next, board)
 	bestPotential, maxScore, changed = check_moves(bestPotential, maxScore, potential_moves_hold, board)
@@ -137,8 +181,9 @@ def find_best_move(holdPiece, nextPiece, board):
 if __name__ == "__main__":
 	## Make sure to initiate with the jstris game windown in the primary screen with 100% zoom in
 	## the game board, new game button, and the upcoming pieces must be full-sized (don't actually think that it resizes) and fully visible
+	check_screen()
 	initiate()
-	do_moves([])
+	#do_moves([])
 	gameImg, forsightImg, holdImg = capture_inputs()
 	gameState = gs.GameState(gameImg, forsightImg, holdImg)
 
