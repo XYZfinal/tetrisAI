@@ -12,6 +12,10 @@ def potential_moves(block, gameboard):
 			if top[column] == -1 and gameboard[row][column] != 'E':
 				top[column] = row
 				count = count + 1
+            elif top[column] == -1 and row == 19:
+                top[column] = 20
+                count = count + 1
+            
 			if count == 10:
 				break
 		if count == 10:
