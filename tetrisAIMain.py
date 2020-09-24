@@ -116,18 +116,19 @@ def initiate():
 ## also screenprint for debugging
 def do_moves(moves):
 	pyautogui.press(moves)
+	pyautogui.press('space')
 	### dummy ai to test usability of pyautogui (TO REMOVE)
-	pyautogui.press('shift')
-	for i in range(5):
-		pyautogui.press('left', presses=5)
-		pyautogui.press('space')
+	#pyautogui.press('shift')
+	#for i in range(5):
+	#	pyautogui.press('left', presses=5)
+	#	pyautogui.press('space')
 
-	for i in range(5):
-		pyautogui.press('right', presses=5)
-		pyautogui.press('space')
+	#for i in range(5):
+	#	pyautogui.press('right', presses=5)
+	#	pyautogui.press('space')
 
-	for i in range(3):
-		pyautogui.press('space')
+	#for i in range(3):
+	#	pyautogui.press('space')
 
 ## check all potential moves and find the best move that beats the given maxscore
 ## return the same bestPotential and maxscore if nothing is better
@@ -141,9 +142,9 @@ def check_moves(bestPotential, maxScore, potential_moves, board):
 			tempMatrix[xy[0]][xy[1]] = 'N'
 		score = ev.evaluate(tempMatrix)
 
-		if DEBUG:
-			debug.print_matrix(tempMatrix)
-			print(str(score))
+		#if DEBUG:
+			#debug.print_matrix(tempMatrix)
+			#print(str(score))
 
 		if score > maxScore:
 			maxScore = score
@@ -164,11 +165,11 @@ def find_best_move(holdPiece, nextPiece, board):
 	bestPotential, maxScore, changed = check_moves(bestPotential, maxScore, potential_moves_hold, board)
 
 	if DEBUG:
-		print('\nPotential future moves from previous position: \n ')
-		for coords in potential_moves_next:
-			debug.print_coords(coords, board)
-		for coords in potential_moves_hold:
-			debug.print_coords(coords, board)
+		#print('\nPotential future moves from previous position: \n ')
+		#for coords in potential_moves_next:
+		#	debug.print_coords(coords, board)
+		#for coords in potential_moves_hold:
+		#	debug.print_coords(coords, board)
 		print('Best score coords: With score of' + str(maxScore) + '\n')
 		if changed:
 			debug.print_coords(potential_moves_hold[bestPotential], board)
@@ -185,16 +186,25 @@ if __name__ == "__main__":
 	## the game board, new game button, and the upcoming pieces must be full-sized (don't actually think that it resizes) and fully visible
 	check_screen()
 	initiate()
-	#do_moves([])
-	gameImg, forsightImg, holdImg = capture_inputs()
-	gameState = gs.GameState(gameImg, forsightImg, holdImg, SQUARE)
-
-	if DEBUG:
-		gameState.debug_pretty_print()
-		print(ev.evaluate(gameState.matrix))
-		print('\n')
-
-	coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
+	pyautogui.press('shift')
+	firstMove = True
+	while True:
+		gameImg, forsightImg, holdImg = capture_inputs()
+		gameState = gs.GameState(gameImg, forsightImg, holdImg, SQUARE)
+		
+		if DEBUG:
+			print('===============================')
+			gameState.debug_pretty_print()
+			print(ev.evaluate(gameState.matrix))
+			print('\n')
+		
+		if firstMove:
+			coords, maxScore, changed = find_best_move('E', gameState.next, gameState.matrix)
+		else:
+			coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
+		moves = algo.get_moves(coords, gameState.matrix, gameState.next)
+		do_moves(moves)
+	
 
 	capture_game('after.png')
 	pyautogui.press('space', presses=10)
