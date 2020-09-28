@@ -79,7 +79,7 @@ def capture_hold():
 	if LEFT_UP == 'leftUpCorner.JPG':
 		holdRegion = (LEFT-SQUARE*4-9, TOP+SQUARE, SQUARE*4, SQUARE*2)
 	elif LEFT_UP == 'MACleftUpCorner.JPG':
-		holdRegion = (LEFT-SQUARE*4-9, TOP+SQUARE, SQUARE*4, SQUARE*2)
+		holdRegion = (LEFT-SQUARE*4, TOP+SQUARE, SQUARE*4, SQUARE*2)
 	else:
 		holdRegion = (LEFT-SQUARE*4-9, TOP+SQUARE, SQUARE*4, SQUARE*2)
 	image = pyautogui.screenshot('hold.png', region=holdRegion)
