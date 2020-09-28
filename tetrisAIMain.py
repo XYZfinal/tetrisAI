@@ -201,6 +201,7 @@ if __name__ == "__main__":
 			print('\n')
 		
 		if firstMove:
+			firstMove = False
 			coords, maxScore, changed = find_best_move('E', gameState.next, gameState.matrix)
 		else:
 			coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)

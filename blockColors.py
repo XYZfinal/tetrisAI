@@ -20,6 +20,7 @@ I_BLOCK_SHADOW = (7, 77, 107)
 T_BLOCK_SHADOW = (87, 20, 69)
 
 def initiate_colors(calibrationUsed):
+	global EMPTY
 	global S_BLOCK
 	global Z_BLOCK
 	global L_BLOCK
