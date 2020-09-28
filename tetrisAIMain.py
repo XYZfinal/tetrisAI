@@ -50,9 +50,9 @@ def calibrate():
 	if LEFT_UP == 'leftUpCorner.JPG':
 		SQUARE = 24
 	elif LEFT_UP == 'MACleftUpCorner.JPG':
-		LEFT += 2
-		TOP += 2
-		SQUARE = leftUpCorner[3] - 10
+		LEFT += 3
+		TOP += 3
+		SQUARE = leftUpCorner[3] - 11
 	else:
 		SQUARE = 24
 	WIDTH = SQUARE * 10
