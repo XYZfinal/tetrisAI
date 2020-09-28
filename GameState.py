@@ -45,7 +45,7 @@ def checkBlock(rgb):
 		#return 'T_SHADOW'
 	else:
 		#Should never happen
-		return rgb
+		return str(rgb)
 	
 
 class GameState:
