@@ -37,6 +37,7 @@ def initiate_colors(calibrationUsed):
 		I_BLOCK = (15, 155, 215)
 		T_BLOCK = (175, 41, 138)
 	elif calibrationUsed == 'MACleftUpCorner.JPG':
+		EMPTY = (0, 0, 0, 255)
 		S_BLOCK = (92, 175, 31, 255)
 		Z_BLOCK = (213, 22, 59, 255)
 		L_BLOCK = (225, 91, 29, 255)
