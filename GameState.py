@@ -45,7 +45,7 @@ def checkBlock(rgb):
 		#return 'T_SHADOW'
 	else:
 		#Should never happen
-		return str(rgb)
+		return 'E'
 	
 
 class GameState:
@@ -65,6 +65,50 @@ class GameState:
 
 		## Determine the next block to place
 		self.next = checkBlock(gameImg.getpixel((square*4.5, square*0.5)))
+
+		if self.next == 'E':
+			if self.matrix[4][1] == 'S':
+				self.next = 'S'
+				self.matrix[4][1] = 'E'
+				self.matrix[5][1] = 'E'
+				self.matrix[4][2] = 'E'
+				self.matrix[3][2] = 'E'
+			elif self.matrix[4][1] == 'Z':
+				self.next = 'Z'
+				self.matrix[4][1] = 'E'
+				self.matrix[3][1] = 'E'
+				self.matrix[4][2] = 'E'
+				self.matrix[5][2] = 'E'
+			elif self.matrix[4][1] == 'L':
+				self.next = 'L'
+				self.matrix[4][1] = 'E'
+				self.matrix[3][1] = 'E'
+				self.matrix[5][1] = 'E'
+				self.matrix[5][0] = 'E'
+			elif self.matrix[4][1] == 'J':
+				self.next = 'J'
+				self.matrix[4][1] = 'E'
+				self.matrix[3][1] = 'E'
+				self.matrix[5][1] = 'E'
+				self.matrix[3][0] = 'E'
+			elif self.matrix[4][1] == 'I':
+				self.next = 'I'
+				self.matrix[4][1] = 'E'
+				self.matrix[3][1] = 'E'
+				self.matrix[5][1] = 'E'
+				self.matrix[6][1] = 'E'
+			elif self.matrix[4][1] == 'O':
+				self.next = 'O'
+				self.matrix[4][1] = 'E'
+				self.matrix[5][1] = 'E'
+				self.matrix[4][2] = 'E'
+				self.matrix[5][2] = 'E'
+			elif self.matrix[4][1] == 'T':
+				self.next = 'T'
+				self.matrix[4][1] = 'E'
+				self.matrix[4][2] = 'E'
+				self.matrix[3][1] = 'E'
+				self.matrix[5][1] = 'E'
 
 		## Determine the holded block
 		hold1 = checkBlock(holdImg.getpixel((square*1.5, square*0.5)))

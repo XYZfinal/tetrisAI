@@ -188,7 +188,7 @@ if __name__ == "__main__":
 	## the game board, new game button, and the upcoming pieces must be full-sized (don't actually think that it resizes) and fully visible
 	check_screen()
 	initiate()
-	pyautogui.press('shift')
+	#pyautogui.press('shift')
 	firstMove = True
 	while True:
 		gameImg, forsightImg, holdImg = capture_inputs()
@@ -201,7 +201,7 @@ if __name__ == "__main__":
 			print('\n')
 		
 		if firstMove:
-			firstMove = False
+			#firstMove = False
 			coords, maxScore, changed = find_best_move('E', gameState.next, gameState.matrix)
 		else:
 			coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
