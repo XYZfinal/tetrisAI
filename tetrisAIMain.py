@@ -8,7 +8,7 @@ import debug
 import blockColors as color
 
 ## print debug output?
-DEBUG = True
+DEBUG = False
 
 ## Parameters for the size and location of the game
 LEFT_UP = ''
@@ -117,7 +117,11 @@ def initiate():
 ## input a sequence of moves for the ai to accomplish, the goal is to place exactly one block by the end of the sequence 
 ## also screenprint for debugging
 def do_moves(moves):
-	pyautogui.press(moves)
+	if DEBUG:
+		print(moves)
+		time.sleep(2)
+	if moves:
+		pyautogui.press(moves)
 	pyautogui.press('space')
 	### dummy ai to test usability of pyautogui (TO REMOVE)
 	#pyautogui.press('shift')
@@ -157,7 +161,7 @@ def check_moves(bestPotential, maxScore, potential_moves, board):
 ## find best moves available for the AI at this point, factoring both the current block to place and the held piece
 def find_best_move(holdPiece, nextPiece, board):
 	potential_moves_next = algo.potential_moves(nextPiece, board)
-
+  
 	if holdPiece != 'E':
 		potential_moves_hold = algo.potential_moves(holdPiece, board)
 	else:
@@ -188,7 +192,7 @@ if __name__ == "__main__":
 	## the game board, new game button, and the upcoming pieces must be full-sized (don't actually think that it resizes) and fully visible
 	check_screen()
 	initiate()
-	#pyautogui.press('shift')
+	pyautogui.press('shift')
 	firstMove = True
 	while True:
 		gameImg, forsightImg, holdImg = capture_inputs()
@@ -198,15 +202,29 @@ if __name__ == "__main__":
 			print('===============================')
 			gameState.debug_pretty_print()
 			print(ev.evaluate(gameState.matrix))
-			print('\n')
+			print('\n')   
 		
 		if firstMove:
-			#firstMove = False
+			firstMove = False
 			coords, maxScore, changed = find_best_move('E', gameState.next, gameState.matrix)
 		else:
 			coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
-		moves = algo.get_moves(coords, gameState.matrix, gameState.next)
-		do_moves(moves)
+
+		if changed:
+			all_moves = ['shift']
+			moves = algo.get_moves(coords, gameState.matrix, gameState.hold)
+		else:
+			all_moves = []
+			moves = algo.get_moves(coords, gameState.matrix, gameState.next)
+
+		if DEBUG:
+			print('To place block:')
+			print(moves)
+
+
+		for move in moves:
+			all_moves.append(move)
+		do_moves(all_moves)
 	
 
 	capture_game('after.png')

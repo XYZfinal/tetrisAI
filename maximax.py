@@ -203,54 +203,65 @@ def potential_moves(block, gameboard):
 
 def get_moves(coord, gameboard, block):
 	ans = []
-	x = 4
+	x = 3
 	if block == 'I': 
-		if (coord[0][0] == coord[1][0]):
+		if (coord[0][1] == coord[1][1]):
 			ans.append('up')
-			x = 6
+			x = 5
 		
 	elif block == 'J': 
-		if (coord[0][1] - 1 == coord[1][1]):
+		if (coord[0][0] - 1 == coord[1][0]):
 			ans.append('up')
-			x = 5
-		elif (coord[2][1] + 1 == coord[3][1]):
-			ans.extend(['up', 'up'])
-		elif (coord[2][1] - 1 == coord[3][1]):
-			ans.extend(['up', 'up', 'up'])
+			x = 4
+		elif (coord[2][0] + 1 == coord[3][0]):
+			ans.append('up')
+			ans.append('up')
+		elif (coord[2][0] - 1 == coord[3][0]):
+			ans.append('up')
+			ans.append('up')
+			ans.append('up')
 
 	elif block == 'L': 
-		if (coord[0][1] + 1 == coord[1][1]):
+		if (coord[0][0] + 1 == coord[1][0]):
 			ans.append('up')
-			x = 5
-		elif (coord[0][1] - 1 == coord[1][1]):
-			ans.append(['up', 'up'])
-		elif (coord[2][1] + 1 == coord[3][1]):
-			ans.extend(['up', 'up', 'up'])
+			x = 4
+		elif (coord[0][0] - 1 == coord[1][0]):
+			ans.append('up')
+			ans.append('up')
+		elif (coord[2][0] + 1 == coord[3][0]):
+			ans.append('up')
+			ans.append('up')
+			ans.append('up')
 
 	elif block == 'S': 
-		if (coord[0][0] == coord[1][0]):
+		if (coord[0][1] == coord[1][1]):
 			ans.append('up')
-			x = 5
+			x = 4
 
 	elif block == 'T': 
-		if (coord[1][0] + 1 == coord[3][0]):
+		if (coord[1][1] + 1 == coord[3][1]):
 			ans.append('up')
-			x = 5
-		elif (coord[1][1] + 1 == coord[3][1]):
-			ans.extend(['up', 'up'])
-		elif (coord[1][1] + 2 == coord[3][1]):
-			ans.extend(['up', 'up', 'up'])
+			x = 4
+		elif (coord[1][0] + 1 == coord[3][0]):
+			ans.append('up')
+			ans.append('up')
+		elif (coord[1][0] + 2 == coord[3][0]):
+			ans.append('up')
+			ans.append('up')
+			ans.append('up')
 		
 	elif block == 'Z': 
-		if (coord[0][0] == coord[1][0]):
+		if (coord[0][1] == coord[1][1]):
 			ans.append('up')
-			x = 5
+			x = 4
 
-	for i in range(x, coord[0][0]):
+	elif block == 'O':
+		x = 4
+
+	for i in range(x, coord[0][1]):
 		ans.append('right')
-	for i in range(coord[0][0], x):
+	for i in range(coord[0][1], x):
 		ans.append('left')
-	ans.append('down')
 	return ans
 		
 
