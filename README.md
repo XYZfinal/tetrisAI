@@ -41,3 +41,5 @@ pip install opencv-python
 2020-09-14: Added selection of best potential moves based on evaluator
 
 2020-09-20: Added function that gets the moves for a block to be placed into designated coordinates in maximax.py
+
+2020-09-30：Debugged previous code and assembled everything into a first working prototype (included video for demonstration)
