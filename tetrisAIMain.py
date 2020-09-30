@@ -1,4 +1,4 @@
-import pyautogui
+import  pyautogui
 import time
 import copy
 import GameState as gs
@@ -120,9 +120,9 @@ def do_moves(moves):
 	if DEBUG:
 		print(moves)
 		time.sleep(2)
-	if moves:
-		pyautogui.press(moves)
-	pyautogui.press('space')
+
+	moves.append('space')
+	pyautogui.press(moves)
 	### dummy ai to test usability of pyautogui (TO REMOVE)
 	#pyautogui.press('shift')
 	#for i in range(5):

@@ -3,7 +3,7 @@
 
 AGGREGATE_HEIGHT_PARAMETER = -0.510066
 COMPLETED_LINES_PARAMETER = 0.760666
-HOLES_PARAMETER = -0.35663
+HOLES_PARAMETER = -0.35663 * 2
 BUMPINESS_PARAMETER = -0.184483
 
 def evaluate(matrix):
@@ -34,7 +34,7 @@ def evaluate(matrix):
 			bumpiness += abs(columnHeight[0] - columnHeight[9])
 
 	resultScore = AGGREGATE_HEIGHT_PARAMETER * aggregateHeight
-	resultScore += COMPLETED_LINES_PARAMETER * completedLines
+	resultScore += COMPLETED_LINES_PARAMETER * (1.5 ** (completedLines - 1))
 	resultScore += HOLES_PARAMETER * holes
 	resultScore += BUMPINESS_PARAMETER * bumpiness
 	return resultScore
