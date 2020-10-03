@@ -187,6 +187,39 @@ def find_best_move(holdPiece, nextPiece, board):
 	else:
 		return potential_moves_next[bestPotential], maxScore, changed
 
+def find_best_move_first_level(holdPiece, nextPiece, board, forsight):
+	potential_moves_next = algo.potential_moves(nextPiece, board)
+  
+	if holdPiece != 'E':
+		potential_moves_hold = algo.potential_moves(holdPiece, board)
+	else:
+		potential_moves_hold = []
+
+	bestMaxScore = -99999999
+	bestPotentialMove = None
+	firstLevelChanged = False
+	for potential_move in potential_moves_next:
+		tempBoard = copy.deepcopy(board)
+		for coords in potential_move:
+			tempBoard[coords[0]][coords[1]] = 'N'
+		idontcare, maxScore, idontcare2 = find_best_move(holdPiece, forsight, tempBoard)
+		if maxScore > bestMaxScore:
+			bestMaxScore = maxScore
+			bestPotentialMove = potential_move
+
+	for potential_move in potential_moves_hold:
+		tempBoard = copy.deepcopy(board)
+		for coords in potential_move:
+			tempBoard[coords[0]][coords[1]] = 'N'
+		idontcare, maxScore, idontcare2 = find_best_move(holdPiece, forsight, tempBoard)
+		if maxScore > bestMaxScore:
+			bestMaxScore = maxScore
+			bestPotentialMove = potential_move
+			firstLevelChanged = True
+
+
+	return bestPotentialMove, bestMaxScore, firstLevelChanged
+
 if __name__ == "__main__":
 	## Make sure to initiate with the jstris game windown in the primary screen with 100% zoom in
 	## the game board, new game button, and the upcoming pieces must be full-sized (don't actually think that it resizes) and fully visible
@@ -207,8 +240,12 @@ if __name__ == "__main__":
 		if firstMove:
 			firstMove = False
 			coords, maxScore, changed = find_best_move('E', gameState.next, gameState.matrix)
+			## second line adds a check of future (more elegant block placements but much slower as more possibilities are explored)
+			#coords, maxScore, changed = find_best_move_first_level('E', gameState.next, gameState.matrix, gameState.future[0])
 		else:
 			coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
+			## second line adds a check of future block (more elegant block placements but much slower as more possibilities are explored)
+			#coords, maxScore, changed = find_best_move_first_level(gameState.hold, gameState.next, gameState.matrix, gameState.future[0])
 
 		if changed:
 			all_moves = ['shift']
