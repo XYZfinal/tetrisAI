@@ -43,3 +43,5 @@ pip install opencv-python
 2020-09-20: Added function that gets the moves for a block to be placed into designated coordinates in maximax.py
 
 2020-09-30：Debugged previous code and assembled everything into a first working prototype (included video for demonstration)
+
+2020-10-03: Added the option of choosing to consider forsight block for the sake of placing the blocks knowing the future. This allows the AI to place block much more elegantly and with much less holes in the gameboard. The extra level of calculation is however much slower. In the case of sprint mode tetris, the first one is preferable. In the case of survival, the second algorithm is superior. 

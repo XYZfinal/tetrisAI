@@ -7,8 +7,9 @@ import maximax as algo
 import debug
 import blockColors as color
 
-## print debug output?
+## Configuration constants
 DEBUG = False
+MODE = 'FAST'
 
 ## Parameters for the size and location of the game
 LEFT_UP = ''
@@ -239,13 +240,21 @@ if __name__ == "__main__":
 		
 		if firstMove:
 			firstMove = False
-			coords, maxScore, changed = find_best_move('E', gameState.next, gameState.matrix)
-			## second line adds a check of future (more elegant block placements but much slower as more possibilities are explored)
-			#coords, maxScore, changed = find_best_move_first_level('E', gameState.next, gameState.matrix, gameState.future[0])
+			if MODE == 'FAST':
+				coords, maxScore, changed = find_best_move('E', gameState.next, gameState.matrix)
+			elif MODE == 'ELEGANT':
+				## second line adds a check of future (more elegant block placements but much slower as more possibilities are explored)
+				coords, maxScore, changed = find_best_move_first_level('E', gameState.next, gameState.matrix, gameState.future[0])
+			else:
+				coords, maxScore, changed = find_best_move('E', gameState.next, gameState.matrix)
 		else:
-			coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
-			## second line adds a check of future block (more elegant block placements but much slower as more possibilities are explored)
-			#coords, maxScore, changed = find_best_move_first_level(gameState.hold, gameState.next, gameState.matrix, gameState.future[0])
+			if MODE == 'FAST':
+				coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
+			elif MODE == 'ELEGANT':
+				## second line adds a check of future block (more elegant block placements but much slower as more possibilities are explored)
+				coords, maxScore, changed = find_best_move_first_level(gameState.hold, gameState.next, gameState.matrix, gameState.future[0])
+			else:
+				coords, maxScore, changed = find_best_move(gameState.hold, gameState.next, gameState.matrix)
 
 		if changed:
 			all_moves = ['shift']
